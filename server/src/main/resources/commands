@@ -1,0 +1,6 @@
+openssl genrsa -des3 -out server.key 2048
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -days 731 -in server.csr -signkey server.key -out server.crt
+openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12 -name myAlias
+keytool --importkeystore -srckeystore server.p12 -srcstoretype PKCS12 -destkeystore server.jks -deststoretype JKS -alias myAlias
+keytool -importcert -file server.crt -keystore client.jks -alias myAlias
